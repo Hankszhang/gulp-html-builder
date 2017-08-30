@@ -1,10 +1,15 @@
 'use strict';
 
 import gulp from 'gulp';
-
+import clean from 'gulp-clean';
 import build from './build/index';
 
 gulp.task('dev', ['less', 'tpl', 'localServer'], () => {});
+
+// 压缩图片
+gulp.task('image', () => {
+    build.minifyImg();
+});
 
 // 编译less文件
 gulp.task('less', () => {
@@ -19,4 +24,10 @@ gulp.task('tpl', () => {
 // 启动本地server
 gulp.task('localServer', () => {
     build.server();
+});
+
+// 清理dist文件夹内的所有文件
+gulp.task('clean', () => {
+    gulp.src('dist/*', {read: false})
+    .pipe(clean());
 });
