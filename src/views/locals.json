@@ -1,45 +1,32 @@
 {
     "local": {
         "isLocal": true,
-        "mobileDomain": "local.qiye.qq.com:8963",
-        "domain": "localhost:8963",
-        "sslDomain": "localhost:8963",
+        "domain": "localhost:8965",
+        "sslDomain": "localhost:8965",
         "serverDomain": "dev.gtimg.com",
-        "vue": "vue",
-        "base": "",
-        "shtml_base": "/shtml-ui/src",
-        "vhtml_base": "localhost:8085/",
-        "qda": "devimg.b.qq.com"
+        "base": ""
     },
 
-
     "development": {
-        "mobileDomain": "devimg.b.qq.com",
         "domain": "devimg.b.qq.com",
         "serverDomain": "dev.gtimg.com",
-        "vue": "vue",
         "sslDomain": "devimg.b.qq.com"
     },
 
     "test": {
-        "mobileDomain": "oaimg.b.qq.com",
         "domain": "oaimg.b.qq.com",
         "sslDomain": "oaimg.b.qq.com",
         "serverDomain": "oa.gtimg.com"
     },
 
     "production": {
-        "badjs": "//bqq.gtimg.com/lbf/0.8.6/lib/badjs.js"
     },
 
     "common": {
-        "mobileDomain": "bqq.gtimg.com",
         "domain": "bqq.gtimg.com",
         "serverDomain": "bqq.gtimg.com",
         "vue": "vue.prod",
         "sslDomain": "bqq.gtimg.com",
-        "vhtmlVersion": "latest",
-        "base": "/ea",
         "minify": {
             "removeComments": false,
             "collapseWhitespace": false,

@@ -1,13 +1,16 @@
 'use strict';
 
 import gulp from 'gulp';
+import path from 'path';
+import through2 from 'through2';
 import webserver from 'gulp-webserver';
 import gUtil from 'gulp-util';
 import plumber from 'gulp-plumber';
-import through2 from 'through2';
-import path from 'path';
-import settings from './settings';
 import template from 'art-template';
+import less from 'gulp-less';
+import autoprefixer from 'gulp-autoprefixer';
+import settings from './settings';
+
 const viewPath = path.join(__dirname, '../' + settings.viewPath);
 
 template.defaults.root = viewPath;
@@ -29,7 +32,20 @@ const build = {
         }));
     },
 
-    compile: () => {
+    less2css: () => {
+        gulp.src('src/less/**/*.less')
+        .pipe(plumber())
+        .pipe(less())
+        .pipe(autoprefixer({
+            browsers: ['ie > 8', 'last 2 versions']
+        }))
+        .pipe(gulp.dest('./dist/static/css'))
+        .on('end', () => {
+            gUtil.log(gUtil.colors.green('css compiled!'));
+        });
+    },
+
+    tpl2html: () => {
         gulp.src(['src/views/**/*.html', '!src/views/widgets', '!src/views/widgets/**'])
         .pipe(plumber())
         .pipe(through2.obj((file, enc, cb) => {
@@ -42,7 +58,10 @@ const build = {
             file.contents = new Buffer(tpl);
             cb(null, file);
         }))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./dist'))
+        .on('end', () => {
+            gUtil.log(gUtil.colors.green('Html compiled!'));
+        });
     }
 };
 
