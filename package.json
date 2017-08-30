@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {},
   "devDependencies": {
+    "art-template": "^4.12.1",
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "gulp": "^3.9.1",
@@ -14,6 +15,6 @@
     "gulp-util": "^3.0.8",
     "gulp-watch": "^4.3.11",
     "gulp-webserver": "^0.9.1",
-    "stream-combiner2": "^1.1.1"
+    "through2": "^2.0.3"
   }
 }

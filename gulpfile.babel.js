@@ -1,17 +1,14 @@
 'use strict';
 
 import gulp from 'gulp';
-import webserver from 'gulp-webserver';
 
-gulp.task('dev', ['localServer'], () => {});
+import build from './build/index';
 
+gulp.task('dev', ['compile', 'localServer'], () => {});
+
+gulp.task('compile', () => {
+    build.compile();
+});
 gulp.task('localServer', () => {
-    gulp.src('./src')
-    .pipe(webserver({
-        host: 'localhost',
-        port: 8965,
-        directoryListing: true,
-        livereload: true,
-        open: 'views/test.html'
-    }));
+    build.server();
 });
