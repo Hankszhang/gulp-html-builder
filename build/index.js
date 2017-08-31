@@ -20,6 +20,19 @@ template.defaults.encoding = 'utf-8';
 
 const locals = require(path.join(viewPath, 'locals.json'));
 
+// 调用art-template渲染模板
+const render = (file, cb) => {
+    const tplStr = file.contents.toString();
+    if (file.isNull() || !tplStr) {
+        return cb(null, file);
+    }
+    let tpl = template.render(tplStr, {
+        locals: Object.assign({}, locals.common, locals.local)
+    });
+    file.contents = new Buffer(tpl);
+    cb(null, file);
+};
+
 const build = {
     minifyImg: () => {
         gulp.src('src/img/*')
@@ -43,14 +56,16 @@ const build = {
         gulp.src(['src/views/**/*.html', '!src/views/widgets', '!src/views/widgets/**'])
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(through2.obj((file, enc, cb) => {
-            if (file.isNull()) {
-                return cb(null, file);
-            }
-            let tpl = template.render(file.contents.toString(), {
-                locals: Object.assign({}, locals.common, locals.local)
-            });
-            file.contents = new Buffer(tpl);
-            cb(null, file);
+            render(file, cb);
+        }))
+        .pipe(gulp.dest('./dist'));
+    },
+
+    renderTpl: (path) => {
+        gulp.src(path.substr(path.indexOf('src/views/')))
+        .pipe(plumber({errorHandler: gUtil.log}))
+        .pipe(through2.obj((file, enc, cb) => {
+            render(file, cb);
         }))
         .pipe(gulp.dest('./dist'));
     },
@@ -62,8 +77,8 @@ const build = {
             host: settings.host,
             port: settings.port,
             directoryListing: true,
-            livereload: true,
-            open: 'test.html'
+            livereload: true
+            // open: 'test.html'
         }));
     }
 };

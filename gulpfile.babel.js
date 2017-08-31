@@ -24,8 +24,15 @@ gulp.task('tpl', () => {
 
 // 监听文件变化
 gulp.task('watch', () => {
-    return gWatch('src/views/**/*.html', {verbose: true, name: 'html-watcher'}, () => {
-        build.tpl2html();
+    return gWatch('src/views/**/*.html', {verbose: true, name: 'html-watcher'}, (file) => {
+        // 添加模板 or 修改通用模板时整个页面都需要重新编译
+        if (file.event === 'add' || file.path.indexOf('/widgets/' !== -1)) {
+            build.tpl2html();
+        }
+        // 否则只需编译当前模板
+        else {
+            build.renderTpl(file.path);
+        }
     });
 });
 
