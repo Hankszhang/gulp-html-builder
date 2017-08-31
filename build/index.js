@@ -10,6 +10,7 @@ import template from 'art-template';
 import less from 'gulp-less';
 import autoprefixer from 'gulp-autoprefixer';
 import imagemin from 'gulp-imagemin';
+import gWatch from 'gulp-watch';
 import settings from './settings';
 const viewPath = path.join(__dirname, '../' + settings.viewPath);
 
@@ -29,6 +30,7 @@ const build = {
 
     less2css: () => {
         gulp.src('src/less/**/*.less')
+        .pipe(gWatch('src/less/**/*.less'), {verbose: true, name: 'less-watcher'})
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(less())
         .pipe(autoprefixer({

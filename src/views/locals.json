@@ -25,7 +25,6 @@
     "common": {
         "domain": "bqq.gtimg.com",
         "serverDomain": "bqq.gtimg.com",
-        "vue": "vue.prod",
         "sslDomain": "bqq.gtimg.com",
         "minify": {
             "removeComments": false,

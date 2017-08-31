@@ -2,9 +2,10 @@
 
 import gulp from 'gulp';
 import clean from 'gulp-clean';
+import gWatch from 'gulp-watch';
 import build from './build/index';
 
-gulp.task('dev', ['less', 'tpl', 'localServer'], () => {});
+gulp.task('dev', ['less', 'tpl', 'localServer', 'watch'], () => {});
 
 // 压缩图片
 gulp.task('image', () => {
@@ -19,6 +20,13 @@ gulp.task('less', () => {
 // 编译html模板
 gulp.task('tpl', () => {
     build.tpl2html();
+});
+
+// 监听文件变化
+gulp.task('watch', () => {
+    return gWatch('src/views/**/*.html', {verbose: true, name: 'html-watcher'}, () => {
+        build.tpl2html();
+    });
 });
 
 // 启动本地server
