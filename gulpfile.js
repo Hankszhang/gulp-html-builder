@@ -5,7 +5,7 @@ var clean = require('gulp-clean');
 var gWatch = require('gulp-watch');
 var build = require('./build/index');
 
-gulp.task('dev', ['less', 'tpl', 'localServer', 'watch'], function () {
+gulp.task('dev', ['less', 'js', 'tpl', 'localServer', 'watch'], function () {
 
 });
 
@@ -17,6 +17,11 @@ gulp.task('image', function () {
 // 编译less文件
 gulp.task('less', function () {
     build.less2css();
+});
+
+// 编译js文件
+gulp.task('js', function () {
+    build.js2js();
 });
 
 // 编译html模板

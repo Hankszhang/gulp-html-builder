@@ -2,6 +2,10 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Test Page</title>
-        <link rel="stylesheet" href="./static/css/test.css">
+        <title><%= title %></title>
+        <link rel="stylesheet" type="text/css" href="//bqq.gtimg.com/vhtml/1.1.x/vhtml.css?v=2017111" />
+    <% for(var i = 0; i < css.length; i++){ %>
+        <link rel="stylesheet" type="text/css" href="//{{locals.domain}}/static/<%= css[i] %>">
+    <% } %>
     </head>
+    <body>

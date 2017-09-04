@@ -1,7 +1,10 @@
-    <body>
-        <div>A test page for gulp build</div>
-        <p>current domain: <%= locals.domain %></p>
-        <p>ssl domain: <%= locals.sslDomain %></p>
+
         <div class="footer">Copyright © 1998-<%= 1900 + (new $imports.Date()).getYear()%> Tencent Inc. All Rights Reserved. 腾讯公司 版权所有.</div>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script type="text/javascript" src="//bqq.gtimg.com/vhtml/1.1.x/vue.full.js?v=2017111"></script>
+        <script type="text/javascript" src="//bqq.gtimg.com/vhtml/1.1.x/vhtml.js?v=2017111"></script>
+    <% for(var i = 0; i < js.length; i++){ %>
+        <script type="text/javascript" src="//<%= locals.domain %>/static/<%= js[i] %>"></script>
+    <% } %>
     </body>
 </html>

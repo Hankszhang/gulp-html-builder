@@ -1,2 +1,20 @@
-<% include('./widgets/header.html') %>
-<% include('./widgets/footer.html') %>
+<% include('./widgets/header.html', {
+    locals: locals,
+    title: 'Test Page',
+    css: ['css/test.css']
+}) %>
+
+    <div>A test page for gulp build</div>
+    <p>current domain: {{ locals.domain }}</p>
+
+    <h2 class="">Vue Part</h2>
+    <div class="vue-container" id="app">
+        <v-input kind="simple" placeholder="手机号" v-model="phone"></v-input>
+        <div is="v-button" @click="sendCode" :disabled="isSending" style="width:102px;" v-html="sendText"></div>
+    </div>
+
+
+<% include('./widgets/footer.html', {
+    locals: locals,
+    js: ['js/test.js']
+}) %>

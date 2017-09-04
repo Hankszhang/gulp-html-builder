@@ -24,13 +24,21 @@ var build = {
 
     less2css: function () {
         gulp.src(settings.lessPath + '/**/*.less')
-        .pipe(gWatch('src/less/**/*.less'), {verbose: true, name: 'less-watcher'})
+        .pipe(gWatch(settings.lessPath + '/**/*.less'), {verbose: true, name: 'less-watcher'})
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(less())
         .pipe(autoprefixer({
             browsers: settings.browserList
         }))
         .pipe(gulp.dest('./dist/static/css'));
+    },
+
+    js2js: function () {
+        gulp.src(settings.jsPath + '/**/*.js')
+        .pipe(gWatch(settings.jsPath + '/**/*.js'), {verbose: true, name: 'js-watcher'})
+        .pipe(plumber({errorHandler: gUtil.log}))
+        // to do production editon
+        .pipe(gulp.dest('./dist/static/js'));
     },
 
     tpl2html: function () {
@@ -63,7 +71,7 @@ var build = {
             port: settings.port,
             directoryListing: true,
             livereload: true,
-            middleware: mock()
+            middleware: mock
         }));
     }
 };
