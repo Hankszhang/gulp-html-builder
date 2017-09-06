@@ -3,11 +3,12 @@
 var gulp = require('gulp');
 var clean = require('gulp-clean');
 var gWatch = require('gulp-watch');
+var gulpSequence = require('gulp-sequence');
 var build = require('./build/index');
 
-gulp.task('dev', ['less', 'js', 'tpl', 'localServer', 'watch'], function () {
+gulp.task('dev', gulpSequence(['less', 'js'], 'tpl', 'localServer', 'watch'));
 
-});
+gulp.task('build', gulpSequence(['less', 'js'], 'tpl'));
 
 // 压缩图片
 gulp.task('image', function () {

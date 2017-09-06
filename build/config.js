@@ -1,6 +1,7 @@
-var settings = {
+var config = {
     host: 'localhost',
     port: 8965,
+    env: 'local',
     viewPath: 'src/views',
     lessPath: 'src/less',
     jsPath: 'src/js',
@@ -8,4 +9,4 @@ var settings = {
     browserList: ['ie > 8', 'last 2 versions']
 };
 
-module.exports = settings;
+module.exports = config;

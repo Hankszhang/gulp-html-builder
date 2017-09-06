@@ -3,12 +3,13 @@
 var path = require('path');
 var template = require('art-template');
 
-var settings = require('../settings');
+var config = require('../config');
 var utils = require('./utils');
 
-var viewPath = path.join(__dirname, '../../' + settings.viewPath);
+var viewPath = path.join(__dirname, '../../' + config.viewPath);
 var locals = require(path.join(viewPath, 'locals.json'));
 
+// config art-template
 template.defaults.root = viewPath;
 template.defaults.extname = '.html';
 template.defaults.encoding = 'utf-8';
@@ -31,7 +32,7 @@ var render = (file, cb) => {
         return cb(null, file);
     }
     var tpl = template.render(tplStr, {
-        locals: utils.shallowClone({}, locals.common, locals.local)
+        locals: utils.shallowClone({}, locals.common, locals[config.env])
     });
     file.contents = new Buffer(tpl);
     cb(null, file);

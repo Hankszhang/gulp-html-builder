@@ -10,7 +10,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var imagemin = require('gulp-imagemin');
 var gWatch = require('gulp-watch');
 
-var settings = require('./settings');
+var config = require('./config');
 var render = require('./lib/render');
 var mock = require('./lib/mock');
 
@@ -23,19 +23,19 @@ var build = {
     },
 
     less2css: function () {
-        gulp.src(settings.lessPath + '/**/*.less')
-        .pipe(gWatch(settings.lessPath + '/**/*.less'), {verbose: true, name: 'less-watcher'})
+        gulp.src(config.lessPath + '/**/*.less')
+        .pipe(gWatch(config.lessPath + '/**/*.less'), {verbose: true, name: 'less-watcher'})
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(less())
         .pipe(autoprefixer({
-            browsers: settings.browserList
+            browsers: config.browserList
         }))
         .pipe(gulp.dest('./dist/static/css'));
     },
 
     js2js: function () {
-        gulp.src(settings.jsPath + '/**/*.js')
-        .pipe(gWatch(settings.jsPath + '/**/*.js'), {verbose: true, name: 'js-watcher'})
+        gulp.src(config.jsPath + '/**/*.js')
+        .pipe(gWatch(config.jsPath + '/**/*.js'), {verbose: true, name: 'js-watcher'})
         .pipe(plumber({errorHandler: gUtil.log}))
         // to do production editon
         .pipe(gulp.dest('./dist/static/js'));
@@ -43,9 +43,9 @@ var build = {
 
     tpl2html: function () {
         gulp.src([
-            settings.viewPath + '/**/*.html',
-            '!' + settings.viewPath + '/widgets',
-            '!' + settings.viewPath + '/widgets/**'
+            config.viewPath + '/**/*.html',
+            '!' + config.viewPath + '/widgets',
+            '!' + config.viewPath + '/widgets/**'
         ])
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(through2.obj(function (file, enc, cb) {
@@ -55,10 +55,10 @@ var build = {
     },
 
     renderTpl: function (path) {
-        gulp.src(path.substr(path.indexOf(settings.viewPath + '/')))
+        gulp.src(path.substr(path.indexOf(config.viewPath + '/')))
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(through2.obj(function (file, enc, cb) {
-            render(file, cb);
+            render(file, cb, 'local');
         }))
         .pipe(gulp.dest('./dist'));
     },
@@ -67,8 +67,8 @@ var build = {
         gulp.src('./dist')
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(webserver({
-            host: settings.host,
-            port: settings.port,
+            host: config.host,
+            port: config.port,
             directoryListing: true,
             livereload: true,
             middleware: mock
