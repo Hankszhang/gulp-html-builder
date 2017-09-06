@@ -3,50 +3,28 @@
 var path = require('path');
 var url = require('url');
 var fs = require('fs');
-<<<<<<< HEAD
-=======
 var gUtil = require('gulp-util');
->>>>>>> support mock data for ajax & rewrite html partial
 
 module.exports = function (req, res, next) {
     function response(code, body) {
         try {
-<<<<<<< HEAD
-            res.status(code).set({
-=======
             res.writeHead(code, {
->>>>>>> support mock data for ajax & rewrite html partial
                 'Content-Length': Buffer.byteLength(body),
                 'Content-Type': 'application/json'
             });
             res.end(body);
-<<<<<<< HEAD
-            next();
-        }
-        catch (e) {
-            // eslint-disable-next-line
-            console.log(e);
-=======
         }
         catch (e) {
             gUtil.log(gUtil.colors.red(e));
->>>>>>> support mock data for ajax & rewrite html partial
             return;
         }
     }
 
     var pathname = url.parse(req.url).pathname;
-<<<<<<< HEAD
-    var filePath = path.normalize('../dev/mock/' + pathname);
-
-    // 不是api开头的请求，直接next
-    if (pathname.match(/^\/api/)) {
-=======
     var filePath = path.normalize('../../dev/mock/' + pathname);
 
     // 不是api或stores开头的请求，直接next
     if (!pathname.match(/^\/api|^\/store/)) {
->>>>>>> support mock data for ajax & rewrite html partial
         next();
         return;
     }
@@ -54,10 +32,7 @@ module.exports = function (req, res, next) {
     try {
         var resolvedPath = path.resolve(__dirname, filePath);
 
-<<<<<<< HEAD
-=======
         gUtil.log('Ajax request: ', gUtil.colors.green(pathname));
->>>>>>> support mock data for ajax & rewrite html partial
         // 支持RESTful API
         if (fs.existsSync(resolvedPath)
             && fs.statSync(resolvedPath).isDirectory()) {
@@ -90,16 +65,6 @@ module.exports = function (req, res, next) {
         }, 300);
     }
     catch (e) {
-<<<<<<< HEAD
-        // eslint-disable-next-line
-        console.log(e);
-        data = {
-            statusCode: 500,
-            msg: '缺少mock数据',
-            body: ''
-        };
-        response(data.statusCode, data.body);
-=======
         gUtil.log(gUtil.colors.red(e));
         data = {
             statusCode: 500,
@@ -109,6 +74,5 @@ module.exports = function (req, res, next) {
             }
         };
         response(data.statusCode, JSON.stringify(data.body));
->>>>>>> support mock data for ajax & rewrite html partial
     }
 };
