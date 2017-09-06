@@ -65,7 +65,7 @@ var build = {
     },
 
     server: function () {
-        gulp.src('./dist')
+        gulp.src('dist')
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(webserver({
             host: config.host,

@@ -27,6 +27,7 @@ template.defaults.imports.JSON = JSON;
  * @return {Buffer}      返回执行回调结果
  */
 var render = (file, cb, env) => {
+    env = env || 'local';
     var tplStr = file.contents.toString();
     if (file.isNull() || !tplStr) {
         return cb(null, file);
