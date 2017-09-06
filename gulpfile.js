@@ -6,12 +6,13 @@ var gWatch = require('gulp-watch');
 var gulpSequence = require('gulp-sequence');
 var build = require('./build/index');
 
-gulp.task('dev', gulpSequence(['less', 'js'], 'tpl', 'localServer', 'watch'));
+gulp.task('dev', gulpSequence('img', ['less', 'js'], 'tpl:dev', 'localServer', 'watch'));
 
-gulp.task('build', gulpSequence(['less', 'js'], 'tpl'));
+gulp.task('build:test', gulpSequence('img', ['less', 'js'], 'tpl:test'));
+gulp.task('build:prod', gulpSequence('img', ['less', 'js'], 'tpl:prod'));
 
 // 压缩图片
-gulp.task('image', function () {
+gulp.task('img', function () {
     build.minifyImg();
 });
 
@@ -26,8 +27,19 @@ gulp.task('js', function () {
 });
 
 // 编译html模板
-gulp.task('tpl', function () {
+// 本地环境
+gulp.task('tpl:dev', function () {
     build.tpl2html();
+});
+
+// 测试环境
+gulp.task('tpl:test', function () {
+    build.tpl2html('test');
+});
+
+// 发布环境
+gulp.task('tpl:prod', function () {
+    build.tpl2html('production');
 });
 
 // 监听文件变化

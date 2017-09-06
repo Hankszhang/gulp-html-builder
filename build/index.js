@@ -41,7 +41,8 @@ var build = {
         .pipe(gulp.dest('./dist/static/js'));
     },
 
-    tpl2html: function () {
+    tpl2html: function (env) {
+        var distPath = env ? './dist/' + env : './dist';
         gulp.src([
             config.viewPath + '/**/*.html',
             '!' + config.viewPath + '/widgets',
@@ -49,9 +50,9 @@ var build = {
         ])
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(through2.obj(function (file, enc, cb) {
-            render(file, cb);
+            render(file, cb, env);
         }))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest(distPath));
     },
 
     renderTpl: function (path) {

@@ -1,25 +1,15 @@
 {
     "local": {
         "isLocal": true,
-        "domain": "localhost:8965",
-        "sslDomain": "localhost:8965",
-        "serverDomain": "dev.gtimg.com",
-        "base": ""
+        "domain": "localhost:8965"
     },
 
     "development": {
-        "domain": "devimg.b.qq.com",
-        "serverDomain": "dev.gtimg.com",
-        "sslDomain": "devimg.b.qq.com"
+        "domain": "devimg.b.qq.com"
     },
 
     "test": {
-        "domain": "oaimg.b.qq.com",
-        "sslDomain": "oaimg.b.qq.com",
-        "serverDomain": "oa.gtimg.com"
-    },
-
-    "production": {
+        "domain": "oaimg.b.qq.com"
     },
 
     "common": {
