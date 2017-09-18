@@ -16,34 +16,41 @@ var mock = require('./lib/mock');
 
 var build = {
     minifyImg: function () {
-        gulp.src('src/img/*')
+        var env = process.env.NODE_INNER || 'local';
+        var distPath = config.targetPath[env] + '/static/img';
+        return gulp.src('src/img/*')
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(imagemin())
-        .pipe(gulp.dest('./dist/static/img'));
+        .pipe(gulp.dest(distPath));
     },
 
     less2css: function () {
-        gulp.src(config.lessPath + '/**/*.less')
+        var env = process.env.NODE_INNER || 'local';
+        var distPath = config.targetPath[env] + '/static/css';
+        return gulp.src(config.lessPath + '/**/*.less')
         .pipe(gWatch(config.lessPath + '/**/*.less'), {verbose: true, name: 'less-watcher'})
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(less())
         .pipe(autoprefixer({
             browsers: config.browserList
         }))
-        .pipe(gulp.dest('./dist/static/css'));
+        .pipe(gulp.dest(distPath));
     },
 
     js2js: function () {
-        gulp.src(config.jsPath + '/**/*.js')
+        var env = process.env.NODE_INNER || 'local';
+        var distPath = config.targetPath[env] + '/static/js';
+        return gulp.src(config.jsPath + '/**/*.js')
         .pipe(gWatch(config.jsPath + '/**/*.js'), {verbose: true, name: 'js-watcher'})
         .pipe(plumber({errorHandler: gUtil.log}))
         // to do production editon
-        .pipe(gulp.dest('./dist/static/js'));
+        .pipe(gulp.dest(distPath));
     },
 
-    tpl2html: function (env) {
-        var distPath = env ? './dist/' + env : './dist';
-        gulp.src([
+    tpl2html: function () {
+        var env = process.env.NODE_INNER || 'local';
+        var distPath = config.targetPath[env];
+        return gulp.src([
             config.viewPath + '/**/*.html',
             '!' + config.viewPath + '/widgets',
             '!' + config.viewPath + '/widgets/**'
@@ -56,16 +63,17 @@ var build = {
     },
 
     renderTpl: function (path) {
+        var distPath = config.targetPath.local;
         gulp.src(path.substr(path.indexOf(config.viewPath + '/')))
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(through2.obj(function (file, enc, cb) {
             render(file, cb, 'local');
         }))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest(distPath));
     },
 
     server: function () {
-        gulp.src('dist')
+        return gulp.src('dist/development')
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(webserver({
             host: config.host,

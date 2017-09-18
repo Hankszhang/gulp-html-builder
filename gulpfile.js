@@ -6,10 +6,25 @@ var gWatch = require('gulp-watch');
 var gulpSequence = require('gulp-sequence');
 var build = require('./build/index');
 
-gulp.task('dev', gulpSequence('img', ['less', 'js'], 'tpl:dev', 'localServer', 'watch'));
+gulp.task('local', gulpSequence('clean', 'img', ['less', 'js'], 'tpl', 'localServer', 'watch'));
 
-gulp.task('build:test', gulpSequence('img', ['less', 'js'], 'tpl:test'));
-gulp.task('build:prod', gulpSequence('img', ['less', 'js'], 'tpl:prod'));
+gulp.task('dev', gulpSequence('clean', 'env:dev', 'img', ['less', 'js'], 'tpl'));
+gulp.task('test', gulpSequence('env:test', 'img', ['less', 'js'], 'tpl'));
+gulp.task('prod', gulpSequence('env:prod', 'img', ['less', 'js'], 'tpl'));
+
+// 设置dev环境变量
+gulp.task('env:dev', function () {
+    process.env.NODE_INNER = 'development';
+});
+
+// 设置oa环境变量
+gulp.task('env:test', function () {
+    process.env.NODE_INNER = 'test';
+});
+// 设置发布环境变量
+gulp.task('env:prod', function () {
+    process.env.NODE_INNER = 'production';
+});
 
 // 压缩图片
 gulp.task('img', function () {
@@ -27,19 +42,8 @@ gulp.task('js', function () {
 });
 
 // 编译html模板
-// 本地环境
-gulp.task('tpl:dev', function () {
+gulp.task('tpl', function () {
     build.tpl2html();
-});
-
-// 测试环境
-gulp.task('tpl:test', function () {
-    build.tpl2html('test');
-});
-
-// 发布环境
-gulp.task('tpl:prod', function () {
-    build.tpl2html('production');
 });
 
 // 监听文件变化
@@ -63,6 +67,6 @@ gulp.task('localServer', function () {
 
 // 清理dist文件夹内的所有文件
 gulp.task('clean', function () {
-    gulp.src('dist/*', {read: false})
+    return gulp.src('dist/*', {read: false})
     .pipe(clean());
 });
