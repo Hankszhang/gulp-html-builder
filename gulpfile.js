@@ -9,7 +9,10 @@ var build = require('./build/index');
 gulp.task('local', gulpSequence('clean', 'img', ['less', 'js'], 'tpl', 'localServer', 'watch'));
 
 gulp.task('dev', gulpSequence('clean', 'env:dev', 'img', ['less', 'js'], 'tpl'));
-gulp.task('test', gulpSequence('env:test', 'img', ['less', 'js'], 'tpl'));
+
+// 测试环境需要同时编译测试环境和oa环境的两份代码
+gulp.task('test', gulpSequence('clean', 'oa', 'prod'));
+gulp.task('oa', gulpSequence('env:test', 'img', ['less', 'js'], 'tpl'));
 gulp.task('prod', gulpSequence('env:prod', 'img', ['less', 'js'], 'tpl'));
 
 // 设置dev环境变量

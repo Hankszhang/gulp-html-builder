@@ -2,13 +2,13 @@
 
 var gulp = require('gulp');
 var through2 = require('through2');
-var webserver = require('gulp-webserver');
 var gUtil = require('gulp-util');
 var plumber = require('gulp-plumber');
 var less = require('gulp-less');
 var autoprefixer = require('gulp-autoprefixer');
 var imagemin = require('gulp-imagemin');
 var gWatch = require('gulp-watch');
+var browserSync = require('browser-sync').create();
 
 var config = require('./config');
 var render = require('./lib/render');
@@ -27,8 +27,17 @@ var build = {
     less2css: function () {
         var env = process.env.NODE_INNER || 'local';
         var distPath = config.targetPath[env] + '/static/css';
+        if (env === 'local') {
+            return gulp.src(config.lessPath + '/**/*.less')
+            .pipe(gWatch(config.lessPath + '/**/*.less'), {verbose: true, name: 'less-watcher'})
+            .pipe(plumber({errorHandler: gUtil.log}))
+            .pipe(less())
+            .pipe(autoprefixer({
+                browsers: config.browserList
+            }))
+            .pipe(gulp.dest(distPath));
+        }
         return gulp.src(config.lessPath + '/**/*.less')
-        .pipe(gWatch(config.lessPath + '/**/*.less'), {verbose: true, name: 'less-watcher'})
         .pipe(plumber({errorHandler: gUtil.log}))
         .pipe(less())
         .pipe(autoprefixer({
@@ -40,8 +49,13 @@ var build = {
     js2js: function () {
         var env = process.env.NODE_INNER || 'local';
         var distPath = config.targetPath[env] + '/static/js';
+        if (env === 'local') {
+            return gulp.src(config.jsPath + '/**/*.js')
+            .pipe(gWatch(config.jsPath + '/**/*.js'), {verbose: true, name: 'js-watcher'})
+            .pipe(plumber({errorHandler: gUtil.log}))
+            .pipe(gulp.dest(distPath));
+        }
         return gulp.src(config.jsPath + '/**/*.js')
-        .pipe(gWatch(config.jsPath + '/**/*.js'), {verbose: true, name: 'js-watcher'})
         .pipe(plumber({errorHandler: gUtil.log}))
         // to do production editon
         .pipe(gulp.dest(distPath));
@@ -73,15 +87,20 @@ var build = {
     },
 
     server: function () {
-        return gulp.src('dist/development')
-        .pipe(plumber({errorHandler: gUtil.log}))
-        .pipe(webserver({
+        browserSync.init({
+            server: {
+                baseDir: config.targetPath.local,
+                middleware: mock
+            },
             host: config.host,
             port: config.port,
-            directoryListing: true,
-            livereload: true,
-            middleware: mock
-        }));
+            ui: false,
+            open: false,
+            watchOptions: {
+                ignoreInitial: false
+            },
+            files: ['dist/development/**/*.*']
+        });
     }
 };
 

@@ -23,6 +23,9 @@ module.exports = function (req, res, next) {
     var pathname = url.parse(req.url).pathname;
     var filePath = path.normalize('../../dev/mock/' + pathname);
 
+    if (pathname.match(/(.+).html$/)) {
+        gUtil.log('Template request: ', gUtil.colors.green(pathname));
+    }
     // 不是api或stores开头的请求，直接next
     if (!pathname.match(/^\/api|^\/store/)) {
         next();
