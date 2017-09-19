@@ -1,20 +1,29 @@
 {
     "local": {
         "isLocal": true,
-        "domain": "localhost:8965"
+        "domain": "localhost:8965",
+        "vue": "vue",
+        "vhtml_base": "localhost:8085/"
     },
 
     "development": {
-        "domain": "devimg.b.qq.com"
+        "domain": "devimg.b.qq.com",
+        "vue": "vue"
     },
 
     "test": {
         "domain": "oaimg.b.qq.com"
     },
 
+    "production": {
+        "badjs": "//bqq.gtimg.com/lbf/0.8.6/lib/badjs.js"
+    },
+
     "common": {
         "domain": "bqq.gtimg.com",
         "serverDomain": "bqq.gtimg.com",
-        "sslDomain": "bqq.gtimg.com"
+        "sslDomain": "bqq.gtimg.com",
+        "vue": "vue.prod",
+        "vhtmlVersion": "latest",
     }
 }
