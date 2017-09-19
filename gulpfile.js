@@ -6,11 +6,13 @@ var gWatch = require('gulp-watch');
 var gulpSequence = require('gulp-sequence');
 var build = require('./build/index');
 
+// 本地开发
 gulp.task('local', gulpSequence('clean', 'img', ['less', 'js'], 'tpl', 'localServer', 'watch'));
 
+// dev环境
 gulp.task('dev', gulpSequence('clean', 'env:dev', 'img', ['less', 'js'], 'tpl'));
 
-// 测试环境需要同时编译测试环境和oa环境的两份代码
+// 测试环境需要同时编译oa环境和发布环境的两份代码
 gulp.task('test', gulpSequence('clean', 'oa', 'prod'));
 gulp.task('oa', gulpSequence('env:test', 'img', ['less', 'js'], 'tpl'));
 gulp.task('prod', gulpSequence('env:prod', 'img', ['less', 'js'], 'tpl'));
